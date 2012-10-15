@@ -4,3 +4,4 @@
 *.jar
 *.war
 *.ear
+/sd1/nbproject/private/

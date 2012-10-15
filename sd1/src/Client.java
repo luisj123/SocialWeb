@@ -19,9 +19,7 @@ public class Client {
     }
     
     
-    
-    
-    
+
     static class connect extends Thread{
         
         private String IP;

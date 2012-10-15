@@ -8,8 +8,7 @@
  * @author plucas
  */
 public class main {
-    lol
-
+    
             
             
 }

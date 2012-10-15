@@ -11,12 +11,17 @@ public class Server extends Thread{
     private ServerSocket ss;
     private Socket clientSocket;
     
+    
+    Server(){
+        run = true;
+    }
+    
     @Override
     public void run(){
         
         while(run){
             try {
-                ss = new ServerSocket();
+                ss = new ServerSocket(6000);
                 clientSocket = ss.accept();
                 new client(clientSocket).start();
                 

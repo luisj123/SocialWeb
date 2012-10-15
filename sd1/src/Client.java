@@ -7,18 +7,19 @@ import java.net.Socket;
 
 public class Client {
 
+    private connect c;
     
-    public static void main(String args[]){
+    Client(){
         
         System.out.println("Este é o cliente!");
-        connect c = new connect("localhost",6000);
-        
-        
-        
-        
+        c = new connect("localhost",6000);
+       
     }
     
     
+    void run(){
+         c.start();
+    }
 
     static class connect extends Thread{
         

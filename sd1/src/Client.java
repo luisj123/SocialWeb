@@ -63,11 +63,11 @@ public class Client extends Thread {
                 int opcao=sc.nextInt();
                 switch (opcao) {
                     case 1: opcao=1;
-                        Login(); 
+                        Login(0); 
                         showMenu();
                         break;
                     case 2: opcao=2;
-                        Register();
+                        Login(1);
                         break;
                     case 3: opcao=3;
                         return;
@@ -81,20 +81,41 @@ public class Client extends Thread {
         }
 
     }
-    private String Login(){
-        String id = "";
-        System.out.print("ID:");
-       // id = tools.readLine();
-        System.out.println("_____________________");
-        return id;
-    }
+    private String Login(int flag){
+        String username,password,id="";
+        Scanner sc = new Scanner(System.in);
+        if(flag==0) {
+            System.out.println("Login data\n");
+            try{
+            out.writeUTF("check_login");
+            } catch (IOException e) {
+                run = false;
+                System.out.println("Erro: " + e.getMessage());
+            }
+        }
+        else {
+            System.out.println("Fill in data\n");
+            try{
+                out.writeUTF("make_register");
+            } catch (IOException e) {
+                run = false;
+                System.out.println("Erro: " + e.getMessage());
+            }
+        }
+        System.out.print("Username:");
+        username=sc.nextLine();        
+        
+        System.out.print("Password:");
+        password=sc.nextLine();
+        try{
+            out.writeUTF(username);
+            out.writeUTF(password);
+        } catch (IOException e) {
+                run = false;
+                System.out.println("Erro: " + e.getMessage());
+        }
+        // id = tools.readLine();
     
-    private String Register(){
-        String id = "";
-        System.out.println("Please fill the data");
-        System.out.print("ID:");
-        //id = tools.readLine();
-        System.out.println("_____________________");
         return id;
     }
 }

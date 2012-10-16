@@ -51,6 +51,7 @@ class clientThread extends Thread {
         try {
             in = new DataInputStream(s.getInputStream());
             out = new DataOutputStream(s.getOutputStream());
+            String username_check,password_check;
             while(run){
                 String rsp = in.readUTF();
                 post = in.readUTF();
@@ -70,6 +71,14 @@ class clientThread extends Thread {
                 else if(rsp.equals("replyPost")){
                 }
                 else if(rsp.equals("sendIM")){
+                }
+                else if(rsp.equals("check_login")){
+                    username_check=in.readUTF();
+                    password_check=in.readUTF();
+                }
+                else if(rsp.equals("make_register")){
+                    username_check=in.readUTF();
+                    password_check=in.readUTF();
                 }
             }
         } catch (Exception e) {

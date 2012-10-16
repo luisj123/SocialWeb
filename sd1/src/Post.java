@@ -28,6 +28,8 @@ public class Post {
         img = _img;
         date = Calendar.getInstance();
         // ID = ;
+        
+        //new commit
     }
 
     private void addPost() {

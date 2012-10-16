@@ -18,6 +18,8 @@ class user implements lists, Serializable {
     private transient DataOutputStream out;
     int active;
 
+    
+    
     public user(String _id, DataInputStream _in, DataOutputStream _out) {
         id = _id;
         active = 1;

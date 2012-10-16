@@ -23,7 +23,7 @@ public class Server extends Thread {
             while (run) {
 
                 clientSocket = ss.accept();
-                new client(clientSocket).start();
+                new clientThread(clientSocket).start();
             }
             
         } catch (IOException e) {
@@ -38,13 +38,13 @@ public class Server extends Thread {
     }
 }
 
-class client extends Thread {
+class clientThread extends Thread {
 
     private Socket s;
     private DataInputStream in;
     private DataOutputStream out;
 
-    client(Socket _s) {
+    public clientThread(Socket _s) {
         s = _s;
     }
 

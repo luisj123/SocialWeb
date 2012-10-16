@@ -14,7 +14,7 @@ public class Client extends Thread {
     private DataInputStream in;
     private DataOutputStream out;
 
-    Client() {
+    public Client() {
         IP = "127.0.0.1";
         port = 7000;
         run = true;

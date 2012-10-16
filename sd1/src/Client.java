@@ -35,7 +35,7 @@ public class Client extends Thread {
         System.out.print(" > ");
 
     }
-    
+
     public void showLogin() {
 
         System.out.println("--- SocialWeb ---");
@@ -51,71 +51,65 @@ public class Client extends Thread {
             s = new Socket(InetAddress.getByName(IP), port);
             in = new DataInputStream(s.getInputStream());
             out = new DataOutputStream(s.getOutputStream());
+            showLogin();
+            while (run) {
 
-        } catch (Exception e) {
-            System.out.println("erro: " + e.getMessage());
-        }
-        showLogin();
-        while (run) {            
-            try {
-                out.writeUTF("");
                 Scanner sc = new Scanner(System.in);
-                int opcao=sc.nextInt();
+                int opcao = sc.nextInt();
                 switch (opcao) {
-                    case 1: opcao=1;
-                        Login(0); 
+                    case 1:
+                        Login(0);
                         showMenu();
                         break;
-                    case 2: opcao=2;
+                    case 2:
                         Login(1);
                         break;
-                    case 3: opcao=3;
-                        return;
-                    default: System.out.println("\n<<OPÇAO ERRADA!>>\n");
-                        showLogin();
-               }
-            } catch (IOException e) {
-                run = false;
-                System.out.println("Erro: " + e.getMessage());
+                    case 3:
+                        run = false;
+                        break;
+                    default:
+                        System.out.println("\n<<OPÇAO ERRADA!>>\n");
+                }
             }
+        } catch (Exception e) {
+            run = false;
+            System.out.println("erro: " + e.getMessage());
         }
 
+
     }
-    private String Login(int flag){
-        String username,password,id="";
+
+    private String Login(int flag) {
+        String username, password, id = "";
         Scanner sc = new Scanner(System.in);
-        if(flag==0) {
+        if (flag == 0) {
             System.out.println("Login data\n");
-            try{
-            out.writeUTF("check_login");
+            try {
+                out.writeUTF("check_login");
             } catch (IOException e) {
-                run = false;
                 System.out.println("Erro: " + e.getMessage());
             }
-        }
-        else {
+        } else {
             System.out.println("Fill in data\n");
-            try{
+            try {
                 out.writeUTF("make_register");
             } catch (IOException e) {
-                run = false;
                 System.out.println("Erro: " + e.getMessage());
             }
         }
         System.out.print("Username:");
-        username=sc.nextLine();        
-        
+        username = sc.nextLine();
+
         System.out.print("Password:");
-        password=sc.nextLine();
-        try{
+        password = sc.nextLine();
+        try {
             out.writeUTF(username);
             out.writeUTF(password);
         } catch (IOException e) {
-                run = false;
-                System.out.println("Erro: " + e.getMessage());
+            System.out.println("Erro: " + e.getMessage());
         }
         // id = tools.readLine();
-    
+
         return id;
     }
 }

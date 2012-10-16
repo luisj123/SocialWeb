@@ -19,7 +19,7 @@ public class Post {
         text = _text;
         date = Calendar.getInstance();
         // ID = ;
-        Author = new User("Antonio",null,null);
+        Author = new User("Antonio");
         addPost();
     }
     
@@ -38,7 +38,7 @@ public class Post {
             String INSERT_RECORD = "insert into posts (author, object, date, time) values(?,?,?,?)";
     
             st = connection.prepareStatement(INSERT_RECORD);
-            st.setString(1, Author.getID());
+            st.setString(1, Author.getName());
             st.setString(2, text);
             java.sql.Date sqlDate = new java.sql.Date(date.getTime().getTime());
             st.setDate(3, sqlDate);

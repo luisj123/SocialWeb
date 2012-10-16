@@ -49,7 +49,8 @@ public class Client extends Thread {
 
             showMenu();
             try {
-                out.writeUTF("");
+                out.writeUTF("postTxt");
+                out.writeUTF("user");
                 in.readUTF();
             } catch (IOException e) {
                 run = false;

@@ -7,11 +7,13 @@ public class main {
     public static void main(String args[]){
         
         if(args[0].equals("server")){
-            new Server().start();
+            Server ser = new Server();
+            ser.start();
             
         }
         else if(args[0].equals("client")){
-            new Client().run();
+            Client cli = new Client();
+            cli.start();
         }
     }
     

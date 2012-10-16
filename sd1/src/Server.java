@@ -21,7 +21,7 @@ public class Server extends Thread{
         
         while(run){
             try {
-                ss = new ServerSocket(6000);
+                ss = new ServerSocket(7000);
                 clientSocket = ss.accept();
                 new client(clientSocket).start();
                 

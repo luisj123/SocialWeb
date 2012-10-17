@@ -4,7 +4,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.*;
+import java.util.Scanner;
 
 public class Client extends Thread {
 
@@ -14,11 +14,13 @@ public class Client extends Thread {
     private Socket s;
     private DataInputStream in;
     private DataOutputStream out;
+    private Scanner sc;
 
     public Client() {
         IP = "localhost";
         port = 7000;
         run = true;
+        sc = new Scanner(System.in);
     }
 
     public void showMenu() {
@@ -36,13 +38,36 @@ public class Client extends Thread {
 
     }
 
-    public void showLogin() {
+    public int showLogin() {
 
         System.out.println("--- SocialWeb ---");
-        System.out.println(" 1. Login");
-        System.out.println(" 2. Register");
-        System.out.println(" 3. Exit");
-        System.out.print(" > ");
+
+
+        while (run) {
+            System.out.println(" 1. Login");
+            System.out.println(" 2. Register");
+            System.out.println(" 3. Exit");
+            System.out.print(" > ");
+
+            switch (sc.nextInt()) {
+                case 1:
+                    if (Login(0) == 1) {
+                        return 1;
+                    }
+                    break;
+                case 2:
+                    if (Login(1) == 1) {
+                        return 1;
+                    }
+                    break;
+                case 3:
+                    run = false;
+                    break;
+                default:
+                    System.out.println("\n<<OPÇAO ERRADA!>>\n");
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -51,64 +76,99 @@ public class Client extends Thread {
             s = new Socket(InetAddress.getByName(IP), port);
             in = new DataInputStream(s.getInputStream());
             out = new DataOutputStream(s.getOutputStream());
-            showLogin();
-            while (run) {
+            if (showLogin() == 1) {
+                while (run) {
+                    showMenu();
+                    /*
+                     * chama o MENU
+                     */
+                    int opcao = sc.nextInt();
+                    sc = new Scanner(System.in);
 
-                Scanner sc = new Scanner(System.in);
-                int opcao = sc.nextInt();
-                switch (opcao) {
-                    case 1:
-                        Login(0);
-                        showMenu();
-                        break;
-                    case 2:
-                        Login(1);
-                        break;
-                    case 3:
-                        run = false;
-                        break;
-                    default:
-                        System.out.println("\n<<OPÇAO ERRADA!>>\n");
+                    switch (opcao) {
+                        case 1:
+                            out.writeUTF("postTxt");
+                            System.out.print("Texto: ");
+                            out.writeUTF(sc.nextLine());
+                            break;
+                        case 2:
+                            out.writeUTF("editPost");
+                            System.out.print("ID: ");
+                            out.writeUTF(sc.nextLine());
+                            System.out.print("Texto: ");
+                            out.writeUTF(sc.nextLine());
+                            break;
+                        case 3:
+                            out.writeUTF("delPost");
+                            System.out.print("ID: ");
+                            out.writeUTF(sc.nextLine());
+                            break;
+                        case 4:
+                            out.writeUTF("postImg");
+                            System.out.print("Imagem: ");
+                            out.writeUTF(sc.nextLine());
+                            break;
+                        case 5:
+                            out.writeUTF("delImg");
+                            System.out.print("ID: ");
+                            out.writeUTF(sc.nextLine());
+                            break;
+                        case 6:
+                            out.writeUTF("replyPost");
+                            System.out.print("ID: ");
+                            out.writeUTF(sc.nextLine());
+                            System.out.print("Texto: ");
+                            out.writeUTF(sc.nextLine());
+                            break;
+                        case 7:
+                            out.writeUTF("sendIM");
+                            break;
+                        case 8:
+                            out.writeUTF("exit");
+                            System.out.println("A terminar o programa!");
+                            run = false;
+                            break;
+                        default:
+                            System.out.println("\n<<OPÇAO ERRADA!>>\n");
+                            break;
+                    }
                 }
             }
         } catch (Exception e) {
             run = false;
-            System.out.println("erro: " + e.getMessage());
+            System.out.println("erro: " + e);
         }
 
 
     }
 
-    private String Login(int flag) {
-        String username, password, id = "";
-        Scanner sc = new Scanner(System.in);
-        if (flag == 0) {
-            System.out.println("Login data\n");
-            try {
-                out.writeUTF("check_login");
-            } catch (IOException e) {
-                System.out.println("Erro: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Fill in data\n");
-            try {
-                out.writeUTF("make_register");
-            } catch (IOException e) {
-                System.out.println("Erro: " + e.getMessage());
-            }
-        }
-        System.out.print("Username:");
-        username = sc.nextLine();
+    private int Login(int flag) {
+        String username, password;
+        int id = 0;
 
-        System.out.print("Password:");
-        password = sc.nextLine();
+        sc.nextLine();
         try {
+            if (flag == 0) {
+                System.out.println("Insira os seus dados \n");
+                out.writeUTF("check_login");
+            } else {
+                System.out.println("Preencha com os seus dados\n");
+                out.writeUTF("make_register");
+            }
+            System.out.print("Username: ");
+            username = sc.nextLine();
+
+            System.out.print("Password: ");
+            password = sc.nextLine();
+
             out.writeUTF(username);
             out.writeUTF(password);
+            id = in.readInt();
+            System.out.println();
+
         } catch (IOException e) {
             System.out.println("Erro: " + e.getMessage());
         }
-        // id = tools.readLine();
 
         return id;
     }
